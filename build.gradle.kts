@@ -6,3 +6,9 @@ plugins {
     id("com.google.dagger.hilt.android") version "2.51.1" apply false
     alias(libs.plugins.google.gms.google.services) apply false
 }
+
+buildscript {
+    dependencies {
+        classpath("com.google.gms:google-services:4.4.0")
+    }
+}
