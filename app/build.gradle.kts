@@ -2,17 +2,14 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.google.gms.google.services)
-    id("kotlin-kapt")
-    id("com.google.dagger.hilt.android")
 }
 
 android {
-    namespace = "com.sagnikmukherjee.ecommercedemo"
+    namespace = "com.sagnikmukherjee.ecomuser"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.sagnikmukherjee.ecommercedemo"
+        applicationId = "com.sagnikmukherjee.ecomuser"
         minSdk = 26
         targetSdk = 35
         versionCode = 1
@@ -43,17 +40,6 @@ android {
 }
 
 dependencies {
-
-    implementation(libs.firebase.storage)
-    implementation(libs.firebase.firestore)
-    implementation ("com.google.firebase:firebase-firestore:25.1.1")
-    implementation("com.google.android.gms:play-services-location:21.0.1")
-
-//   dagger hilt
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
-    implementation(libs.androidx.hilt.navigation.compose.v100)
-
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
