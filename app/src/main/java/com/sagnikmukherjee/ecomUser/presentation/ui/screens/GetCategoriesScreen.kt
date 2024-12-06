@@ -28,9 +28,8 @@ fun GetCategoriesScreen(
         viewModel.getAllCategories()
     }
 
-    Column {
         LazyRow (
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ){
@@ -42,5 +41,5 @@ fun GetCategoriesScreen(
                }
                 }
             }
-        }
+
     }

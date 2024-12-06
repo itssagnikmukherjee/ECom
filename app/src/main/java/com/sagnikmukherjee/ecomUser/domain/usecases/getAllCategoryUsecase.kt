@@ -4,8 +4,9 @@ import com.sagnikmukherjee.ecomUser.domain.repo.Repo
 import javax.inject.Inject
 
 class GetAllCategoryUsecase @Inject constructor(private val repo: Repo) {
-
     fun getAllCategories() = repo.getAllCategories()
+}
 
-
+class GetAllProductUsecase @Inject constructor(private val repo: Repo) {
+    fun getAllProducts() = repo.getAllProducts()
 }
