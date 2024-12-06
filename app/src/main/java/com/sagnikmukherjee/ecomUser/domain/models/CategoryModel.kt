@@ -1,8 +1,9 @@
 package com.sagnikmukherjee.ecomUser.domain.models
 
 data class CategoryModel(
-    var categoryName: String,
-    var categoryIcon: String,
+    val categoryName: String,
+    val categoryIcon: String,
+    val dateAdded: Any? = ""
 ){
     constructor() : this("","")
 }

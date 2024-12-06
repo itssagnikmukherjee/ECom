@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.sagnikmukherjee.ecomUser.presentation.viewModel.UserAppViewModel
 import java.nio.file.WatchEvent
+import java.text.SimpleDateFormat
 
 @Composable
 fun GetCategoriesScreen(
@@ -37,6 +38,7 @@ fun GetCategoriesScreen(
                Card {
                 Text(text = state.value.categoryData[it]?.categoryName.toString())
                 Text(state.value.categoryData[it]?.categoryIcon.toString())
+//                   Text(SimpleDateFormat("dd/MM/yyyy").format(state.value.categoryData[it]?.dateAdded))
                }
                 }
             }
