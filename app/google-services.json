@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:941515755263:android:551d81383daaa8db8a06ca",
+        "mobilesdk_app_id": "1:941515755263:android:83d82fef0d1a3dd28a06ca",
         "android_client_info": {
-          "package_name": "com.example.ecommerce"
+          "package_name": "com.sagnikmukherjee.ecommercedemo"
         }
       },
       "oauth_client": [],
@@ -26,9 +26,9 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:941515755263:android:83d82fef0d1a3dd28a06ca",
+        "mobilesdk_app_id": "1:941515755263:android:bea03a5f0cd86c168a06ca",
         "android_client_info": {
-          "package_name": "com.sagnikmukherjee.ecommercedemo"
+          "package_name": "com.sagnikmukherjee.ecomuser"
         }
       },
       "oauth_client": [],

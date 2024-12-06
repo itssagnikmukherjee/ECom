@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -40,6 +42,17 @@ android {
 }
 
 dependencies {
+
+    //   Firebase
+    implementation(libs.firebase.storage)
+    implementation(libs.firebase.firestore)
+    implementation ("com.google.firebase:firebase-firestore:25.1.1")
+    implementation("com.google.android.gms:play-services-location:21.0.1")
+
+//   dagger hilt
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+    implementation(libs.androidx.hilt.navigation.compose.v100)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
