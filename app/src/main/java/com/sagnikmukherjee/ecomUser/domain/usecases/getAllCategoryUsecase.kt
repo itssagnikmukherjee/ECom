@@ -1,4 +1,11 @@
 package com.sagnikmukherjee.ecomUser.domain.usecases
 
-class getAllCategoryUsecase {
+import com.sagnikmukherjee.ecomUser.domain.repo.Repo
+import javax.inject.Inject
+
+class GetAllCategoryUsecase @Inject constructor(private val repo: Repo) {
+
+    fun getAllCategories() = repo.getAllCategories()
+
+
 }
