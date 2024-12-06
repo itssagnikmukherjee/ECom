@@ -12,7 +12,7 @@ import com.sagnikmukherjee.ecomUser.utils.constants.Constants.CATEGORY
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
 
-class repoImpl @Inject constructor(private val firebaseStorage: FirebaseFirestore) : Repo {
+class RepoImpl @Inject constructor(private val firebaseStorage: FirebaseFirestore) : Repo {
     override fun getAllCategories(): Flow<ResultState<List<CategoryModel>>> = callbackFlow{
         trySend(ResultState.Loading)
         firebaseStorage.collection(CATEGORY).limit(6).get().addOnSuccessListener {
