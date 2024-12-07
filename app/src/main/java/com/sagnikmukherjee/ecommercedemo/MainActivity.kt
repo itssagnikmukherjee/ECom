@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import com.sagnikmukherjee.ecommercedemo.presentation.ui.screens.AddCategoryScreen
+import com.sagnikmukherjee.ecommercedemo.presentation.ui.screens.AddProductScreen
 import com.sagnikmukherjee.ecommercedemo.presentation.ui.theme.ECommerceDemoTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -19,7 +20,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             ECommerceDemoTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    AddCategoryScreen()
+//                    AddCategoryScreen()
+                    AddProductScreen()
                 }
             }
         }

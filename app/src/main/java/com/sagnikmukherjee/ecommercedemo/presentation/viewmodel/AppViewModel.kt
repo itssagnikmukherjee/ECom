@@ -4,6 +4,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sagnikmukherjee.ecommercedemo.domain.models.CategoryModel
+import com.sagnikmukherjee.ecommercedemo.domain.models.ProductModel
 import com.sagnikmukherjee.ecommercedemo.domain.repo.Repo
 import com.sagnikmukherjee.ecommercedemo.presentation.state.ResultState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +18,6 @@ import javax.inject.Inject
 class AppViewModel @Inject constructor(private val repo: Repo) : ViewModel() {
 
     // add category
-
     private val _addCategoryState = MutableStateFlow(AddCategoryState())
     val addCategoryState = _addCategoryState.asStateFlow()
 
@@ -42,8 +42,41 @@ class AppViewModel @Inject constructor(private val repo: Repo) : ViewModel() {
             }
     }
 
+//    add product
+    private val _addProductState = MutableStateFlow(AddProductState())
+    val addProductState = _addProductState.asStateFlow()
+
+    fun addProduct(product: ProductModel){
+        viewModelScope.launch{
+            repo.addProduct(product).collectLatest {
+
+                when(it){
+                    is ResultState.Loading -> {
+                        _addProductState.value = AddProductState(isLoading = true)
+                    }
+
+                    is ResultState.Success -> {
+                        _addProductState.value = AddProductState(isSuccess = it.data)
+                    }
+
+                    is ResultState.Error->{
+                        _addProductState.value = AddProductState(error = it.message.toString())
+                    }
+
+                }
+
+            }
+        }
+    }
 
 }
+
+
+data class AddProductState(
+    val isLoading: Boolean = false,
+    val isSuccess: String = "",
+    val error: String = ""
+)
 
 data class AddCategoryState(
     val isLoading: Boolean = false,
