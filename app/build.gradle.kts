@@ -44,7 +44,7 @@ android {
 
 dependencies {
 
-    //   Firebase
+//   Firebase
     implementation(libs.firebase.storage)
     implementation(libs.firebase.firestore)
     implementation ("com.google.firebase:firebase-firestore:25.1.1")
