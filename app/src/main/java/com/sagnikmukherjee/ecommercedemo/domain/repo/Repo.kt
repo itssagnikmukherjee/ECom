@@ -9,8 +9,7 @@ import kotlinx.coroutines.flow.Flow
 interface Repo {
     fun addCategory(category: CategoryModel) : Flow<ResultState<String>>
     fun addProduct(product: ProductModel) : Flow<ResultState<String>>
-
-//    fun addImage(image: Uri) : Flow<ResultState<String>>
+    fun uploadImageToImgBB(imagePath: String, apiKey: String, onResult: (String?) -> Unit)
 
 
 }

@@ -69,6 +69,14 @@ class AppViewModel @Inject constructor(private val repo: Repo) : ViewModel() {
         }
     }
 
+
+//   add image to BB
+    fun uploadImageToImgBB(imagePath: String, onResult: (String?) -> Unit) {
+        val apiKey = "891c36f69bd8bc447943bea5f94459db"
+        repo.uploadImageToImgBB(imagePath, apiKey, onResult)
+    }
+
+
 }
 
 

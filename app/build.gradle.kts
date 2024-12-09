@@ -62,6 +62,9 @@ dependencies {
     implementation("io.coil-kt.coil3:coil-compose:3.0.4")
     implementation("io.coil-kt.coil3:coil-network-okhttp:3.0.4")
 
+//   OkHttp
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

@@ -2,6 +2,10 @@ package com.sagnikmukherjee.ecommercedemo.presentation.ui.screens
 
 import android.content.Intent
 import android.graphics.Outline
+import android.net.Uri
+import android.os.FileUtils
+import android.os.Handler
+import android.os.Looper
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -36,6 +40,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil3.compose.rememberAsyncImagePainter
 import com.sagnikmukherjee.ecommercedemo.domain.models.ProductModel
 import com.sagnikmukherjee.ecommercedemo.presentation.viewmodel.AppViewModel
+import okhttp3.MultipartBody
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import org.json.JSONObject
+import java.io.File
+import android.util.Base64
 
 @Preview(showBackground = true)
 @Composable
@@ -45,18 +55,18 @@ fun AddProductScreen(viewModel: AppViewModel = hiltViewModel()) {
     var productActualPrice by remember { mutableStateOf("") }
     var productBeforeDiscountPrice by remember { mutableStateOf("") }
     var productImage by remember { mutableStateOf("") }
+    var productImageUri by remember { mutableStateOf<Uri?>(null) }
     var availableUnits by remember { mutableIntStateOf(0) }
-    var isAvailable by remember { mutableStateOf(false) }
     var dateAdded by remember { mutableLongStateOf(System.currentTimeMillis()) }
     val context = LocalContext.current
 
-    //      Image Picker
-    val imagePickerLauncher: ActivityResultLauncher<String>
-            = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        uri?.let {
-            productImage = it.toString()
+    // Image Picker
+    val imagePickerLauncher: ActivityResultLauncher<String> =
+        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            uri?.let {
+                productImageUri = it
+            }
         }
-    }
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -64,76 +74,92 @@ fun AddProductScreen(viewModel: AppViewModel = hiltViewModel()) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         OutlinedTextField(
-            value = productName, onValueChange = { productName = it },
+            value = productName,
+            onValueChange = { productName = it },
             label = { Text("Product Name") }
         )
-//        OutlinedTextField(
-//            value = productImage, onValueChange = { productImage = it },
-//            label = { Text("Product Image") }
-//        )
         OutlinedTextField(
-            value = productDescription, onValueChange = { productDescription = it },
+            value = productDescription,
+            onValueChange = { productDescription = it },
             label = { Text("Product Desc") }
         )
         OutlinedTextField(
-            value = productActualPrice, onValueChange = { productActualPrice = it },
+            value = productActualPrice,
+            onValueChange = { productActualPrice = it },
             label = { Text("Product Actual Price") }
         )
         OutlinedTextField(
-            value = productBeforeDiscountPrice, onValueChange = { productBeforeDiscountPrice = it },
-            label = { Text("Product DiscountPrice") }
+            value = productBeforeDiscountPrice,
+            onValueChange = { productBeforeDiscountPrice = it },
+            label = { Text("Product Discount Price") }
         )
         OutlinedTextField(
-            value = availableUnits.toString(), onValueChange = { availableUnits = it.toIntOrNull() ?: 0},
+            value = availableUnits.toString(),
+            onValueChange = { availableUnits = it.toIntOrNull() ?: 0 },
             label = { Text("Product Units") }
         )
 
-        //Image Picker Button
-        Button(onClick = {
-            imagePickerLauncher.launch("image/*")
-        }) {
+        // Image Picker Button
+        Button(onClick = { imagePickerLauncher.launch("image/*") }) {
             Text("Select Image")
         }
-        if (productImage.isNotEmpty()) {
-            val painter = rememberAsyncImagePainter(productImage)
-            Surface (
-                modifier = Modifier.padding(16.dp).size(300.dp),
+
+        // Display the selected image
+        if (productImageUri != null) {
+            val painter = rememberAsyncImagePainter(productImageUri)
+            Surface(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .size(300.dp),
                 shape = RoundedCornerShape(20.dp),
                 shadowElevation = 10.dp
-            ){
+            ) {
                 Image(
                     painter = painter,
                     contentDescription = "Selected Image",
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize().clickable{
-                        imagePickerLauncher.launch("image/*")
-                    }
+                    modifier = Modifier.fillMaxSize()
                 )
             }
-
         } else {
             Text("No image selected")
         }
 
-
         Button(onClick = {
-            viewModel.addProduct(ProductModel(
-                productName = productName,
-                productDescription = productDescription,
-                productActualPrice = productActualPrice,
-                productBeforeDiscountPrice = productBeforeDiscountPrice,
-                productImage = productImage,
-                availableUnits = availableUnits,
-                dateAdded = dateAdded
-            ))
-
-            Toast.makeText(context, "Product $productName Added Successfully", Toast.LENGTH_SHORT).show()
-
+            if (productImageUri != null) {
+                val imagePath = com.sagnikmukherjee.ecommercedemo.utils.FileUtils.getPath(context, productImageUri!!)
+                if (imagePath != null) {
+                    viewModel.uploadImageToImgBB(imagePath) { imageUrl ->
+                        if (imageUrl != null) {
+                            productImage = imageUrl
+                            viewModel.addProduct(
+                                ProductModel(
+                                    productName = productName,
+                                    productDescription = productDescription,
+                                    productActualPrice = productActualPrice,
+                                    productBeforeDiscountPrice = productBeforeDiscountPrice,
+                                    productImage = productImage,
+                                    availableUnits = availableUnits,
+                                    dateAdded = dateAdded
+                                )
+                            )
+                            Handler(Looper.getMainLooper()).post{
+                                Toast.makeText(context, "Product added Successfully", Toast.LENGTH_SHORT).show()
+                            }
+                        } else {
+                            Handler(Looper.getMainLooper()).post{
+                                Toast.makeText(context, "Product failed to upload", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                }
+            } else {
+                Handler(Looper.getMainLooper()).post{
+                    Toast.makeText(context, "Please select an image", Toast.LENGTH_SHORT).show()
+                }
+            }
         }) {
             Text("Add Product")
         }
-
     }
-
 }
-
