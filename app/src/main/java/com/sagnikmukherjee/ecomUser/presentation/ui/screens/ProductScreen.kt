@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil3.compose.AsyncImage
 import com.sagnikmukherjee.ecomUser.presentation.viewModel.UserAppViewModel
 
 @Composable
@@ -25,7 +26,12 @@ fun ProductsScreen(viewModel: UserAppViewModel = hiltViewModel()) {
             Text(text = state.value.productData[it]?.productDescription.toString())
             Text(text = state.value.productData[it]?.productActualPrice.toString())
             Text(text = state.value.productData[it]?.productBeforeDiscountPrice.toString())
-            Text(text = state.value.productData[it]?.productImage.toString())
+
+                AsyncImage(
+                    model = state.value.productData[it]?.productImage.toString(),
+                    contentDescription = "product image"
+                )
+
             }
         }
 
